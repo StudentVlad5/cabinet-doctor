@@ -42,7 +42,6 @@ import {
   DecisionBoxLabel,
   DecisionBoxInput,
   DecisionBoxTextarea,
-  // DecisionBoxInputText,
   DecisionBoxTextareaLabel,
   TdCMP,
   TdCMPSpan,
@@ -108,8 +107,7 @@ export const CheckListDetails = () => {
     inputDataHospitalizationTimeDate,
     setInputDataHospitalizationTimeDate,
   ] = useState('');
-  // const [inputDataHospitalizationDate, setInputDataHospitalizationDate] =
-  //   useState('');
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const routerParams = useParams();
@@ -168,6 +166,8 @@ export const CheckListDetails = () => {
   const [hemorrhages_defect, setHemorrhages_defect] = useState(false);
   const [SACStroke_defect, setSACStroke_defect] = useState(false);
   const [ischemicStroke_defect, setIschemicStroke_defect] = useState(false);
+  const [pnmk_defect, setPnmk_defect] = useState(false);
+  const [unknown_accident_defect, setUnknown_accident_defect] = useState(false);
   const [beginStrokeTreatment_defect, setBeginStrokeTreatment_defect] =
     useState(false);
   const [intravenousAccess_defect, setIntravenousAccess_defect] =
@@ -179,12 +179,12 @@ export const CheckListDetails = () => {
   const [ecgTaken_defect, setEcgTaken_defect] = useState(false);
   const [lossOfBalance_defect, setLossOfBalance_defect] = useState(false);
   const [visionProblems_defect, setVisionProblems_defect] = useState(false);
-  // const [, setNoteChecklistSMP_defect] = useState(false); //noteChecklistSMP_defect
   // Дополнительная информация от инсультного центра
   const [patientArrivalTime, setPatientArrivalTime] = useState('');
   const [patientArrivalDate, setPatientArrivalDate] = useState('');
   const [timeDateCt, setTimeDateCt] = useState('');
   const [tltTimeDate, setTltTimeDate] = useState('');
+  const [cagTimeDate, setСagTimeDate] = useState('');
 
   const [timeDateCt_defect, setTimeDateCt_defect] = useState(false);
   const [tltTimeDate_defect, setTltTimeDate_defect] = useState(false);
@@ -192,6 +192,7 @@ export const CheckListDetails = () => {
     inputDataHospitalizationTimeDate_defect,
     setInputDataHospitalizationTimeDate_defect,
   ] = useState(false);
+  const [cagTimeDate_defect, setСagTimeDate_defect] = useState(false);
   // Заключительное решение
   const [hospitalizationDepartment, setHospitalizationDepartment] =
     useState('');
@@ -224,9 +225,6 @@ export const CheckListDetails = () => {
             new Date(data.normal?.inputDataHospitalizationTimeDate)
           );
         }
-        // if (data.normal?.hospitalizationDate) {
-        //   setInputDataHospitalizationDate(data.normal?.hospitalizationDate);
-        // }
         if (data.normal?.patientFullName_defect) {
           setPatientFullName_defect(
             JSON.parse(data.normal?.patientFullName_defect)
@@ -349,6 +347,14 @@ export const CheckListDetails = () => {
             JSON.parse(data.normal?.ischemicStroke_defect)
           );
         }
+        if (data.normal?.pnmk_defect) {
+          setPnmk_defect(JSON.parse(data.normal?.pnmk_defect));
+        }
+        if (data.normal?.unknown_accident_defect) {
+          setUnknown_accident_defect(
+            JSON.parse(data.normal?.unknown_accident_defect)
+          );
+        }
         if (data.normal?.beginStrokeTreatment_defect) {
           setBeginStrokeTreatment_defect(
             JSON.parse(data.normal?.beginStrokeTreatment_defect)
@@ -397,16 +403,14 @@ export const CheckListDetails = () => {
             data.normal?.noteChecklistStrokeCenter_defect
           );
         }
-        // if (data.normal?.noteChecklistSMP_defect) {
-        //   setNoteChecklistSMP_defect(
-        //     JSON.parse(data.normal?.noteChecklistSMP_defect)
-        //   );
-        // }
         if (data.normal?.timeDateCt) {
           setTimeDateCt(new Date(data.normal?.timeDateCt));
         }
         if (data.normal?.tltTimeDate) {
           setTltTimeDate(new Date(data.normal?.tltTimeDate));
+        }
+        if (data.normal?.cagTimeDate) {
+          setСagTimeDate(new Date(data.normal?.cagTimeDate));
         }
         if (data.normal?.patientArrivalTime) {
           setPatientArrivalTime(data.normal?.patientArrivalTime);
@@ -419,6 +423,9 @@ export const CheckListDetails = () => {
         }
         if (data.normal?.tltTimeDate_defect) {
           setTltTimeDate_defect(JSON.parse(data.normal?.tltTimeDate_defect));
+        }
+        if (data.normal?.cagTimeDate_defect) {
+          setСagTimeDate_defect(JSON.parse(data.normal?.cagTimeDate_defect));
         }
         if (data.normal?.inputDataHospitalizationTimeDate_defect) {
           setInputDataHospitalizationTimeDate_defect(
@@ -433,13 +440,12 @@ export const CheckListDetails = () => {
     })();
   }, [id]);
 
-  // const momentCheckDate = moment(checkDateAlertSimptomDate);
   const today = moment();
   const firstSymptomDate = moment(
     `${checkAlertSimptomDate} ${checkAlertSimptomHh}:${checkAlertSimptomMm}`,
     'YYYY-MM-DD HH:mm'
-  ).zone("+06:00");
-  
+  ).zone('+06:00');
+
   const hoursDifference = today.diff(firstSymptomDate, 'hours');
 
   let message;
@@ -450,9 +456,11 @@ export const CheckListDetails = () => {
   } else {
   }
 
-
-  useEffect (()=>{
-    if(hoursDifference){ setCheckDateAlertSimptomDate(+hoursDifference)}},[hoursDifference]);
+  useEffect(() => {
+    if (hoursDifference) {
+      setCheckDateAlertSimptomDate(+hoursDifference);
+    }
+  }, [hoursDifference]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -464,8 +472,8 @@ export const CheckListDetails = () => {
         &inputDataHospitalizationTimeDate=${inputDataHospitalizationTimeDate}&patientFullName_defect=${patientFullName_defect}&patientINN_defect=${patientINN_defect}&patientSex_defect=${patientSex_defect}
         &visualDescription_defect=${visualDescription_defect}&saggingFace_defect=${saggingFace_defect}&handDisplacement_defect=${handDisplacement_defect}&speechDisorders_defect=${speechDisorders_defect}&firstSymptomsTime_defect=${firstSymptomsTime_defect}&bloodSugarLevel_defect=${bloodSugarLevel_defect}&bodyTemperature_defect=${bodyTemperature_defect}&arterialPressure_defect=${arterialPressure_defect}&patientBodyWeight_defect=${patientBodyWeight_defect}&patientAge_defect=${patientAge_defect}&intracranialHemorrhages_defect=${intracranialHemorrhages_defect}&majorSurgeriesOrSevereInjuries_defect=${majorSurgeriesOrSevereInjuries_defect}&surgicalInterventions_defect=${surgicalInterventions_defect}&myocardialInfarction_defect=${myocardialInfarction_defect}&stroke_defect=${stroke_defect}
         &arterialPuncture_defect=${arterialPuncture_defect}&smallOperations_defect=${smallOperations_defect}&cardiovascularDiseases_defect=${cardiovascularDiseases_defect}&acuteInfectiousDisease_defect=${acuteInfectiousDisease_defect}&hemorrhagicStroke_defect=${hemorrhagicStroke_defect}&convulsions_defect=${convulsions_defect}&onmk_defect=${onmk_defect}
-        &hemorrhages_defect=${hemorrhages_defect}&SACStroke_defect=${SACStroke_defect}&ischemicStroke_defect=${ischemicStroke_defect}&beginStrokeTreatment_defect=${beginStrokeTreatment_defect}&intravenousAccess_defect=${intravenousAccess_defect}&patientTakingAnticoagulants_defect=${patientTakingAnticoagulants_defect}&ecgTaken_defect=${ecgTaken_defect}&lossOfBalance_defect=${lossOfBalance_defect}&visionProblems_defect=${visionProblems_defect}&selectedOption=${selectedOption}&hospitalizationDepartment=${hospitalizationDepartment}
-        &noteChecklistStrokeCenter_defect=${noteChecklistStrokeCenter_defect}&timeDateCt=${timeDateCt}&tltTimeDate=${tltTimeDate}&patientArrivalTime=${patientArrivalTime}&patientArrivalDate=${patientArrivalDate}&timeDateCt_defect=${timeDateCt_defect}&tltTimeDate_defect=${tltTimeDate_defect}&inputDataHospitalizationTimeDate_defect=${inputDataHospitalizationTimeDate_defect}`
+        &hemorrhages_defect=${hemorrhages_defect}&SACStroke_defect=${SACStroke_defect}&ischemicStroke_defect=${ischemicStroke_defect}&pnmk_defect=${pnmk_defect}&unknown_accident_defect=${unknown_accident_defect}&beginStrokeTreatment_defect=${beginStrokeTreatment_defect}&intravenousAccess_defect=${intravenousAccess_defect}&patientTakingAnticoagulants_defect=${patientTakingAnticoagulants_defect}&ecgTaken_defect=${ecgTaken_defect}&lossOfBalance_defect=${lossOfBalance_defect}&visionProblems_defect=${visionProblems_defect}&selectedOption=${selectedOption}&hospitalizationDepartment=${hospitalizationDepartment}
+        &noteChecklistStrokeCenter_defect=${noteChecklistStrokeCenter_defect}&timeDateCt=${timeDateCt}&tltTimeDate=${tltTimeDate}&cagTimeDate=${cagTimeDate}&patientArrivalTime=${patientArrivalTime}&patientArrivalDate=${patientArrivalDate}&timeDateCt_defect=${timeDateCt_defect}&tltTimeDate_defect=${tltTimeDate_defect}&cagTimeDate_defect=${cagTimeDate_defect}&inputDataHospitalizationTimeDate_defect=${inputDataHospitalizationTimeDate_defect}`
       );
       if (!res) {
         return onFetchError('Whoops, something went wrong');
@@ -482,7 +490,9 @@ export const CheckListDetails = () => {
     Чек-лист №${data?.identifier ? data?.identifier : ''}
     от ${
       data?.identifier
-        ? moment(new Date(+data?.identifier)).zone("+06:00").format('DD/MM/YYYY')
+        ? moment(new Date(+data?.identifier))
+            .zone('+06:00')
+            .format('DD/MM/YYYY')
         : ''
     }
     Бригада ${data?.application_number ? data?.application_number : ''}
@@ -492,42 +502,50 @@ export const CheckListDetails = () => {
     Номер телефона: ${data?.numberPhone ? data?.numberPhone : ''}
 
     Личные данные пациента:
-      ФИО пациента: ${data?.patientFullName ? data?.patientFullName : ''} ${patientFullName_defect === true? '/ Даннные неверны' : ''}
-      ИИН пациента: ${data?.patientINN ? data?.patientINN : ''} ${patientINN_defect === true? '/ Даннные неверны' : ''}
-      Пол пациента: ${data?.patientSex ? data?.patientSex : ''} ${patientSex_defect === true? '/ Даннные неверны' : ''}
+      ФИО пациента: ${data?.patientFullName ? data?.patientFullName : ''} ${
+      patientFullName_defect === true ? '/ Данные неверны' : ''
+    }
+      ИИН пациента: ${data?.patientINN ? data?.patientINN : ''} ${
+      patientINN_defect === true ? '/ Данные неверны' : ''
+    }
+      Пол пациента: ${data?.patientSex ? data?.patientSex : ''} ${
+      patientSex_defect === true ? '/ Данные неверны' : ''
+    }
       Визуальное описание: ${
         data?.visualDescription ? data?.visualDescription : ''
-      } ${visualDescription_defect === true? '/ Даннные неверны' : ''}
+      } ${visualDescription_defect === true ? '/ Данные неверны' : ''}
 
     Методика BE FAST:
       Потеря равновесия:  ${
         data?.lossOfBalance && data?.lossOfBalance.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${lossOfBalance_defect === true? '/ Даннные неверны' : ''}
+      } ${lossOfBalance_defect === true ? '/ Данные неверны' : ''}
       Проблемы со зрением, двоение в глазах:${
         data?.visionProblems && data?.visionProblems.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${visionProblems_defect === true? '/ Даннные неверны' : ''}
+      } ${visionProblems_defect === true ? '/ Данные неверны' : ''}
       Провисание на лице: ${
         data?.saggingFace && data?.saggingFace.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${saggingFace_defect === true? '/ Даннные неверны' : ''}
+      } ${saggingFace_defect === true ? '/ Данные неверны' : ''}
       Смещение рук: ${
         data?.handDisplacement && data?.handDisplacement.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${handDisplacement_defect === true? '/ Даннные неверны' : ''}
+      } ${handDisplacement_defect === true ? '/ Данные неверны' : ''}
       Нарушения речи: ${
         data?.speechDisorders && data?.speechDisorders.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${speechDisorders_defect === true? '/ Даннные неверны' : ''}
+      } ${speechDisorders_defect === true ? '/ Данные неверны' : ''}
       Время появления первых симптомов: ${data?.firstSymptomsTimeHh}:${
       data?.firstSymptomsTimeMm
-    } / ${data?.firstSymptomsDate} ${firstSymptomsTime_defect === true? '/ Даннные неверны' : ''}
+    } / ${data?.firstSymptomsDate} ${
+      firstSymptomsTime_defect === true ? '/ Данные неверны' : ''
+    }
 
     Действия при подозрении на инсульт: 
       Начата процедура лечения инсульта: ${
@@ -535,34 +553,42 @@ export const CheckListDetails = () => {
         data?.beginStrokeTreatment.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${beginStrokeTreatment_defect === true? '/ Даннные неверны' : ''}
+      } ${beginStrokeTreatment_defect === true ? '/ Данные неверны' : ''}
       Установлен внутривенный доступ: ${
         data?.intravenousAccess && data?.intravenousAccess.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${intravenousAccess_defect === true? '/ Даннные неверны' : ''}
+      } ${intravenousAccess_defect === true ? '/ Данные неверны' : ''}
       Пациент принимает антикоагулянты: ${
         data?.patientTakingAnticoagulants &&
         data?.patientTakingAnticoagulants.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${patientTakingAnticoagulants_defect === true? '/ Даннные неверны' : ''}
+      } ${
+      patientTakingAnticoagulants_defect === true ? '/ Данные неверны' : ''
+    }
       У пациента снято ЭКГ: ${data?.ecgTakenHH ? data?.ecgTakenHH : ''} : ${
       data?.ecgTakenMM ? data?.ecgTakenMM : ''
-    }  ${ecgTaken_defect === true? '/ Даннные неверны' : ''}
+    }  ${ecgTaken_defect === true ? '/ Данные неверны' : ''}
       
     Физиологические параметры:
       Содержание сахара в крови: ${
         data?.bloodSugarLevel ? data?.bloodSugarLevel : ''
-      } ммоль/л ${bloodSugarLevel_defect === true? '/ Даннные неверны' : ''}
-      Температура тела: ${data?.bodyTemperature ? data?.bodyTemperature : ''} °C ${bodyTemperature_defect === true? '/ Даннные неверны' : ''}
+      } ммоль/л ${bloodSugarLevel_defect === true ? '/ Данные неверны' : ''}
+      Температура тела: ${
+        data?.bodyTemperature ? data?.bodyTemperature : ''
+      } °C ${bodyTemperature_defect === true ? '/ Данные неверны' : ''}
       Артериальное давление: ${
         data?.arterialPressureS ? data?.arterialPressureS : ''
-      }/${data?.arterialPressureD ? data?.arterialPressureD : ''} мм. рт. ст. ${arterialPressure_defect === true? '/ Даннные неверны' : ''}
+      }/${data?.arterialPressureD ? data?.arterialPressureD : ''} мм. рт. ст. ${
+      arterialPressure_defect === true ? '/ Данные неверны' : ''
+    }
       Масса тела пациента: ${
         data?.patientBodyWeight ? data?.patientBodyWeight : ''
-      } кг ${patientBodyWeight_defect === true? '/ Даннные неверны' : ''}
-      Возраст пациента: ${data?.patientAge ? data?.patientAge : ''} лет ${patientAge_defect === true? '/ Даннные неверны' : ''}
+      } кг ${patientBodyWeight_defect === true ? '/ Данные неверны' : ''}
+      Возраст пациента: ${data?.patientAge ? data?.patientAge : ''} лет ${
+      patientAge_defect === true ? '/ Данные неверны' : ''
+    }
 
     Анамнез:
       Внутричерепные кровоизлияния: ${
@@ -570,80 +596,91 @@ export const CheckListDetails = () => {
         data?.intracranialHemorrhages.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${intracranialHemorrhages_defect === true? '/ Даннные неверны' : ''}
+      } ${intracranialHemorrhages_defect === true ? '/ Данные неверны' : ''}
       Большие операции или тяжелые травмы за последние 14 суток: ${
         data?.majorSurgeriesOrSevereInjuries &&
         data?.majorSurgeriesOrSevereInjuries.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${majorSurgeriesOrSevereInjuries_defect === true? '/ Даннные неверны' : ''}
+      } ${
+      majorSurgeriesOrSevereInjuries_defect === true ? '/ Данные неверны' : ''
+    }
       Недавние внутричерепные или интраспинальные хирургические вмешательства: ${
         data?.surgicalInterventions &&
         data?.surgicalInterventions.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${surgicalInterventions_defect === true? '/ Даннные неверны' : ''}
+      } ${surgicalInterventions_defect === true ? '/ Данные неверны' : ''}
       Инфаркт миокарда в предшествующие инсульту 3 месяца: ${
         data?.myocardialInfarction &&
         data?.myocardialInfarction.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${myocardialInfarction_defect === true? '/ Даннные неверны' : ''}
+      } ${myocardialInfarction_defect === true ? '/ Данные неверны' : ''}
       Инсульт в предшествующие инсульту 3 месяца: ${
         data?.stroke && data?.stroke.toString() === 'true' ? 'Да' : '-'
-      } ${stroke_defect === true? '/ Даннные неверны' : ''}
+      } ${stroke_defect === true ? '/ Данные неверны' : ''}
       Проведена пункция артерии в сложной для компрессии области в предшествующие инсульту 7 дней: ${
         data?.arterialPuncture && data?.arterialPuncture.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${arterialPuncture_defect === true? '/ Даннные неверны' : ''}
+      } ${arterialPuncture_defect === true ? '/ Данные неверны' : ''}
       Малые операции или инвазивные вмешательства в последние 10 дней: ${
         data?.smallOperations && data?.smallOperations.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${smallOperations_defect === true? '/ Даннные неверны' : ''}
+      } ${smallOperations_defect === true ? '/ Данные неверны' : ''}
       Сердечно-сосудистые заболевания (подострый бактериальный эндокардит, острый перикардит): ${
         data?.cardiovascularDiseases &&
         data?.cardiovascularDiseases.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${cardiovascularDiseases_defect === true? '/ Даннные неверны' : ''}
+      } ${cardiovascularDiseases_defect === true ? '/ Данные неверны' : ''}
       Острое инфекционное заболевание: ${
         data?.acuteInfectiousDisease &&
         data?.acuteInfectiousDisease.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${acuteInfectiousDisease_defect === true? '/ Даннные неверны' : ''}
+      } ${acuteInfectiousDisease_defect === true ? '/ Данные неверны' : ''}
       Кровоизлияния в ЖКТ и мочевыводящих путях не позднее 21 дня до инсульта: ${
         data?.hemorrhagicStroke && data?.hemorrhagicStroke.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${hemorrhagicStroke_defect === true? '/ Даннные неверны' : ''}
+      } ${hemorrhagicStroke_defect === true ? '/ Данные неверны' : ''}
       Судорожные приступы в дебюте заболевания (имеется связь с острой церебральной ишемией): ${
         data?.convulsions && data?.convulsions.toString() === 'true'
           ? 'Да'
           : '-'
-      } ${convulsions_defect === true? '/ Даннные неверны' : ''}
+      } ${convulsions_defect === true ? '/ Данные неверны' : ''}
       ОНМК ранее: ${
         (data?.hemorrhages && data?.hemorrhages.toString() === 'true') ||
         (data?.SACStroke && data?.SACStroke.toString() === 'true') ||
-        (data?.ischemicStroke && data?.ischemicStroke.toString() === 'true')
+        (data?.ischemicStroke && data?.ischemicStroke.toString() === 'true') ||
+        (data?.pnmk && data?.pnmk.toString() === 'true')
           ? 'Да'
           : ''
-      } ${onmk_defect === true? '/ Даннные неверны' : ''}
-       Гемморагический: ${
+      } ${onmk_defect === true ? '/ Данные неверны' : ''}
+       Геморрагический : ${
          data?.hemorrhages && data?.hemorrhages.toString() === 'true'
            ? 'Да'
            : '-'
-       } ${hemorrhages_defect === true? '/ Даннные неверны' : ''}
-       САК: ${
+       } ${hemorrhages_defect === true ? '/ Данные неверны' : ''}
+       Субарахноидальное кровоизлияние (САК): ${
          data?.SACStroke && data?.SACStroke.toString() === 'true' ? 'Да' : '-'
-       } ${SACStroke_defect === true? '/ Даннные неверны' : ''}
+       } ${SACStroke_defect === true ? '/ Данные неверны' : ''}
        Ишемический инсульт: ${
          data?.ischemicStroke && data?.ischemicStroke.toString() === 'true'
            ? 'Да'
            : '-'
-       } ${ischemicStroke_defect === true? '/ Даннные неверны' : ''}
+       } ${ischemicStroke_defect === true ? '/ Данные неверны' : ''}
+       Преходящее нарушение мозгового кровообращения (ПНМК): ${
+         data?.pnmk && data?.pnmk.toString() === 'true' ? 'Да' : '-'
+       } ${pnmk_defect === true ? '/ Данные неверны' : ''}
+       Не известно: ${
+         data?.unknown_accident && data?.unknown_accident.toString() === 'true'
+           ? 'Да'
+           : '-'
+       } ${unknown_accident_defect === true ? '/ Данные неверны' : ''}
 
     Данные по заполнителю:
       ФИО сотрудника: ${
@@ -656,12 +693,16 @@ export const CheckListDetails = () => {
         data?.startTimeAutoHh ? data?.startTimeAutoHh : ' '
       }:${data?.startTimeAutoMm ? data?.startTimeAutoMm : ' '} ${moment(
       new Date(+data?.identifier)
-    ).zone("+06:00").format('DD.MM.YYYY')}
+    )
+      .zone('+06:00')
+      .format('DD.MM.YYYY')}
       Заполнение чек-листа завершено:${
         data?.endTimeAutoHh ? data?.endTimeAutoHh : ' '
       }:${data?.endTimeAutoMm ? data?.endTimeAutoMm : ' '} ${moment(
       new Date(+data?.identifier)
-    ).zone("+06:00").format('DD.MM.YYYY')}
+    )
+      .zone('+06:00')
+      .format('DD.MM.YYYY')}
       Примечание к чек-листу от СМП: ${data?.noteChecklistSMP || ''}
 
     Дополнительная информация от инсультного центра:
@@ -671,21 +712,36 @@ export const CheckListDetails = () => {
     }
       Дата и время проведения КТ: ${
         data?.timeDateCt
-          ? moment(new Date(data?.timeDateCt)).zone("+06:00").format('HH:mm DD.MM.YYYY')
+          ? moment(new Date(data?.timeDateCt))
+              .zone('+06:00')
+              .format('HH:mm DD.MM.YYYY')
           : ''
-      } ${timeDateCt_defect === true? '/ Даннные неверны' : ''}
+      } ${timeDateCt_defect === true ? '/ Данные неверны' : ''}
       Дата и время проведения ТЛТ: ${
         data?.tltTimeDate
-          ? moment(new Date(data?.tltTimeDate)).zone("+06:00").format('HH:mm DD.MM.YYYY')
+          ? moment(new Date(data?.tltTimeDate))
+              .zone('+06:00')
+              .format('HH:mm DD.MM.YYYY')
           : ''
-      } ${tltTimeDate_defect === true? '/ Даннные неверны' : ''}
+      } ${tltTimeDate_defect === true ? '/ Данные неверны' : ''}
       Дата и время госпитализации: ${
         data?.inputDataHospitalizationTimeDate
-          ? moment(new Date(data?.inputDataHospitalizationTimeDate)).zone("+06:00").format(
-              'HH:mm DD.MM.YYYY'
-            )
+          ? moment(new Date(data?.inputDataHospitalizationTimeDate))
+              .zone('+06:00')
+              .format('HH:mm DD.MM.YYYY')
           : ''
-      } ${inputDataHospitalizationTimeDate_defect === true? '/ Даннные неверны' : ''}
+      } ${
+      inputDataHospitalizationTimeDate_defect === true
+        ? '/ Данные неверны'
+        : ''
+    }
+      Дата и время ЦАГ и тромбэктомия: ${
+        data?.cagTimeDate
+          ? moment(new Date(data?.cagTimeDate))
+              .zone('+06:00')
+              .format('HH:mm DD.MM.YYYY')
+          : ''
+      } ${cagTimeDate_defect === true ? '/ Данные неверны' : ''}
       
       Заключительное решение:
        Госпитализация в Инсультный центр: ${
@@ -724,7 +780,10 @@ export const CheckListDetails = () => {
             {data?.time}
             <CheckListText>
               Чек-лист №{data?.identifier} <br />
-              от {moment(new Date(+data?.identifier)).zone("+06:00").format('DD/MM/YYYY')}
+              от{' '}
+              {moment(new Date(+data?.identifier))
+                .zone('+06:00')
+                .format('DD/MM/YYYY')}
               <br />
               Бригада №{data?.application_number}
               <br />
@@ -798,8 +857,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={patientINN_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={patientINN_defect ? '1' : '0.5'}
-                      $fill={patientINN_defect ? '#ED2939' : 'grey'} />
+                      <CheckIcon
+                        $props={patientINN_defect ? '1' : '0.5'}
+                        $fill={patientINN_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -820,8 +881,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={patientSex_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={patientSex_defect ? '1' : '0.5'} 
-                      $fill={patientSex_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={patientSex_defect ? '1' : '0.5'}
+                        $fill={patientSex_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -881,8 +944,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={lossOfBalance_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={lossOfBalance_defect ? '1' : '0.5'} 
-                      $fill={lossOfBalance_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={lossOfBalance_defect ? '1' : '0.5'}
+                        $fill={lossOfBalance_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -910,8 +975,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={visionProblems_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={visionProblems_defect ? '1' : '0.5'} 
-                      $fill={visionProblems_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={visionProblems_defect ? '1' : '0.5'}
+                        $fill={visionProblems_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -938,8 +1005,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={saggingFace_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={saggingFace_defect ? '1' : '0.5'} 
-                      $fill={saggingFace_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={saggingFace_defect ? '1' : '0.5'}
+                        $fill={saggingFace_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -1009,7 +1078,7 @@ export const CheckListDetails = () => {
               <Tr>
                 <TdRed
                   $props={
-                    (checkDateAlertSimptomDate > checkData.firstSymptomsTimeMin)
+                    checkDateAlertSimptomDate > checkData.firstSymptomsTimeMin
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -1018,7 +1087,7 @@ export const CheckListDetails = () => {
                 </TdRed>
                 <TdRed
                   $props={
-                    (checkDateAlertSimptomDate > checkData.firstSymptomsTimeMin)
+                    checkDateAlertSimptomDate > checkData.firstSymptomsTimeMin
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -1030,20 +1099,12 @@ export const CheckListDetails = () => {
                   {data?.firstSymptomsDate
                     ? data?.firstSymptomsDate
                     : 'Нет данных'}
-                  {/* {checkDateAlertSimptomDate > checkData.firstSymptomsTimeMin &&
-                    checkDateAlertSimptomDate <
-                      checkData.firstSymptomsTimeMax && ( */}
-                      {/* <span style={{ color: 'red', fontWeight: '700' }}> */}
-                        {/* "Более 4,5 часов" */}
-                        {/* {message} */}
-                      {/* </span> */}
-                    {/* )} */}
-                  {/* {checkDateAlertSimptomDate >=
-                    checkData.firstSymptomsTimeMax && ( */}
-                    <span style={{ color: 'red', fontWeight: '700', marginLeft: 55}}>
-                      {/* "Более 72 часов" */}
-                      {message}
-                    </span>
+                  <span
+                    style={{ color: 'red', fontWeight: '700', marginLeft: 55 }}
+                  >
+                    {/* "Более 72 часов" */}
+                    {message}
+                  </span>
                   {/* )} */}
                 </TdRed>
                 <TdCheckCorrectItem>
@@ -1170,7 +1231,11 @@ export const CheckListDetails = () => {
                         $props={
                           patientTakingAnticoagulants_defect ? '1' : '0.5'
                         }
-                        $fill={patientTakingAnticoagulants_defect ? '#ED2939' : 'grey'}
+                        $fill={
+                          patientTakingAnticoagulants_defect
+                            ? '#ED2939'
+                            : 'grey'
+                        }
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1194,8 +1259,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={ecgTaken_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={ecgTaken_defect ? '1' : '0.5'} 
-                      $fill={ecgTaken_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={ecgTaken_defect ? '1' : '0.5'}
+                        $fill={ecgTaken_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -1451,8 +1518,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={patientAge_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={patientAge_defect ? '1' : '0.5'} 
-                      $fill={patientAge_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={patientAge_defect ? '1' : '0.5'}
+                        $fill={patientAge_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -1507,7 +1576,9 @@ export const CheckListDetails = () => {
                     >
                       <CheckIcon
                         $props={intracranialHemorrhages_defect ? '1' : '0.5'}
-                        $fill={intracranialHemorrhages_defect ? '#ED2939' : 'grey'}
+                        $fill={
+                          intracranialHemorrhages_defect ? '#ED2939' : 'grey'
+                        }
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1559,8 +1630,12 @@ export const CheckListDetails = () => {
                       <CheckIcon
                         $props={
                           majorSurgeriesOrSevereInjuries_defect ? '1' : '0.5'
-                        } 
-                        $fill={majorSurgeriesOrSevereInjuries_defect ? '#ED2939' : 'grey'}
+                        }
+                        $fill={
+                          majorSurgeriesOrSevereInjuries_defect
+                            ? '#ED2939'
+                            : 'grey'
+                        }
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1610,7 +1685,9 @@ export const CheckListDetails = () => {
                     >
                       <CheckIcon
                         $props={surgicalInterventions_defect ? '1' : '0.5'}
-                        $fill={surgicalInterventions_defect ? '#ED2939' : 'grey'}
+                        $fill={
+                          surgicalInterventions_defect ? '#ED2939' : 'grey'
+                        }
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1697,8 +1774,9 @@ export const CheckListDetails = () => {
                       checked={stroke_defect}
                     ></CheckBoxItem>
                     <StylesCheckBoxItem $props={stroke_defect ? '4px' : '1px'}>
-                      <CheckIcon $props={stroke_defect ? '1' : '0.5'} 
-                      $fill={stroke_defect ? '#ED2939' : 'grey'}
+                      <CheckIcon
+                        $props={stroke_defect ? '1' : '0.5'}
+                        $fill={stroke_defect ? '#ED2939' : 'grey'}
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1844,7 +1922,9 @@ export const CheckListDetails = () => {
                     >
                       <CheckIcon
                         $props={cardiovascularDiseases_defect ? '1' : '0.5'}
-                        $fill={cardiovascularDiseases_defect ? '#ED2939' : 'grey'}
+                        $fill={
+                          cardiovascularDiseases_defect ? '#ED2939' : 'grey'
+                        }
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1892,7 +1972,10 @@ export const CheckListDetails = () => {
                       $props={acuteInfectiousDisease_defect ? '4px' : '1px'}
                     >
                       <CheckIcon
-                        $props={acuteInfectiousDisease_defect ? '1' : '0.5'}$fill={acuteInfectiousDisease_defect ? '#ED2939' : 'grey'}
+                        $props={acuteInfectiousDisease_defect ? '1' : '0.5'}
+                        $fill={
+                          acuteInfectiousDisease_defect ? '#ED2939' : 'grey'
+                        }
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1983,7 +2066,9 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={convulsions_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={convulsions_defect ? '1' : '0.5'} $fill={convulsions_defect ? '#ED2939' : 'grey'}
+                      <CheckIcon
+                        $props={convulsions_defect ? '1' : '0.5'}
+                        $fill={convulsions_defect ? '#ED2939' : 'grey'}
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -1997,7 +2082,10 @@ export const CheckListDetails = () => {
                     (data?.SACStroke &&
                       data?.SACStroke.toString() === 'true') ||
                     (data?.ischemicStroke &&
-                      data?.ischemicStroke.toString() === 'true')
+                      data?.ischemicStroke.toString() === 'true') ||
+                    (data?.pnmk && data?.pnmk.toString() === 'true') ||
+                    (data?.unknown_accident &&
+                      data?.unknown_accident.toString() === 'true')
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -2011,7 +2099,10 @@ export const CheckListDetails = () => {
                     (data?.SACStroke &&
                       data?.SACStroke.toString() === 'true') ||
                     (data?.ischemicStroke &&
-                      data?.ischemicStroke.toString() === 'true')
+                      data?.ischemicStroke.toString() === 'true') ||
+                    (data?.pnmk && data?.pnmk.toString() === 'true') ||
+                    (data?.unknown_accident &&
+                      data?.unknown_accident.toString() === 'true')
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -2020,7 +2111,10 @@ export const CheckListDetails = () => {
                     data?.hemorrhages.toString() === 'true') ||
                   (data?.SACStroke && data?.SACStroke.toString() === 'true') ||
                   (data?.ischemicStroke &&
-                    data?.ischemicStroke.toString() === 'true')
+                    data?.ischemicStroke.toString() === 'true') ||
+                  (data?.pnmk && data?.pnmk.toString() === 'true') ||
+                  (data?.unknown_accident &&
+                    data?.unknown_accident.toString() === 'true')
                     ? 'Да'
                     : ''}
                 </TdSmallRed>
@@ -2035,8 +2129,9 @@ export const CheckListDetails = () => {
                       checked={onmk_defect}
                     ></CheckBoxItem>
                     <StylesCheckBoxItem $props={onmk_defect ? '4px' : '1px'}>
-                      <CheckIcon $props={onmk_defect ? '1' : '0.5'} 
-                      $fill={onmk_defect ? '#ED2939' : 'grey'}
+                      <CheckIcon
+                        $props={onmk_defect ? '1' : '0.5'}
+                        $fill={onmk_defect ? '#ED2939' : 'grey'}
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -2051,7 +2146,7 @@ export const CheckListDetails = () => {
                   }
                   style={{ paddingLeft: 60 }}
                 >
-                  Гемморагический
+                  Геморрагический
                 </TdSmallRed>
                 <TdSmallRed
                   $props={
@@ -2079,8 +2174,9 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={hemorrhages_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={hemorrhages_defect ? '1' : '0.5'} 
-                      $fill={hemorrhages_defect ? '#ED2939' : 'grey'}
+                      <CheckIcon
+                        $props={hemorrhages_defect ? '1' : '0.5'}
+                        $fill={hemorrhages_defect ? '#ED2939' : 'grey'}
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -2095,7 +2191,7 @@ export const CheckListDetails = () => {
                   }
                   style={{ paddingLeft: 60 }}
                 >
-                  САК
+                  Субарахноидальное кровоизлияние (САК)
                 </TdSmallRed>
                 <TdSmallRed
                   $props={
@@ -2121,8 +2217,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={SACStroke_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={SACStroke_defect ? '1' : '0.5'} 
-                      $fill={SACStroke_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={SACStroke_defect ? '1' : '0.5'}
+                        $fill={SACStroke_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -2167,8 +2265,98 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={ischemicStroke_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={ischemicStroke_defect ? '1' : '0.5'} 
-                      $fill={ischemicStroke_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={ischemicStroke_defect ? '1' : '0.5'}
+                        $fill={ischemicStroke_defect ? '#ED2939' : 'grey'}
+                      />
+                    </StylesCheckBoxItem>
+                  </label>
+                </TdCheckCorrectItem>
+              </Tr>
+              {/* Добавление данных для поиска */}
+              <Tr>
+                <TdSmallRed
+                  $props={
+                    data?.pnmk && data?.pnmk.toString() === 'true'
+                      ? theme.colors.accentCoral
+                      : theme.colors.darkGrey
+                  }
+                  style={{ paddingLeft: 60 }}
+                >
+                  Преходящее нарушение мозгового кровообращения (ПНМК)
+                </TdSmallRed>
+                <TdSmallRed
+                  $props={
+                    data?.pnmk && data?.pnmk.toString() === 'true'
+                      ? theme.colors.accentCoral
+                      : theme.colors.darkGrey
+                  }
+                >
+                  {data?.pnmk && data?.pnmk.toString() === 'true' ? 'Да' : '-'}
+                </TdSmallRed>
+                <TdCheckCorrectItem>
+                  <label>
+                    <CheckBoxItem
+                      type="checkbox"
+                      id="pnmk_defect"
+                      name="pnmk_defect"
+                      value={pnmk_defect}
+                      onChange={() => setPnmk_defect(!pnmk_defect)}
+                      checked={pnmk_defect}
+                    ></CheckBoxItem>
+                    <StylesCheckBoxItem $props={pnmk_defect ? '4px' : '1px'}>
+                      <CheckIcon
+                        $props={pnmk_defect ? '1' : '0.5'}
+                        $fill={pnmk_defect ? '#ED2939' : 'grey'}
+                      />
+                    </StylesCheckBoxItem>
+                  </label>
+                </TdCheckCorrectItem>
+              </Tr>
+              <Tr>
+                <TdSmallRed
+                  $props={
+                    data?.unknown_accident &&
+                    data?.unknown_accident.toString() === 'true'
+                      ? theme.colors.accentCoral
+                      : theme.colors.darkGrey
+                  }
+                  style={{ paddingLeft: 60 }}
+                >
+                  Не известно
+                </TdSmallRed>
+                <TdSmallRed
+                  $props={
+                    data?.unknown_accident &&
+                    data?.unknown_accident.toString() === 'true'
+                      ? theme.colors.accentCoral
+                      : theme.colors.darkGrey
+                  }
+                >
+                  {data?.unknown_accident &&
+                  data?.unknown_accident.toString() === 'true'
+                    ? 'Да'
+                    : '-'}
+                </TdSmallRed>
+                <TdCheckCorrectItem>
+                  <label>
+                    <CheckBoxItem
+                      type="checkbox"
+                      id="unknown_accident_defect"
+                      name="unknown_accident_defect"
+                      value={unknown_accident_defect}
+                      onChange={() =>
+                        setUnknown_accident_defect(!unknown_accident_defect)
+                      }
+                      checked={unknown_accident_defect}
+                    ></CheckBoxItem>
+                    <StylesCheckBoxItem
+                      $props={unknown_accident_defect ? '4px' : '1px'}
+                    >
+                      <CheckIcon
+                        $props={unknown_accident_defect ? '1' : '0.5'}
+                        $fill={unknown_accident_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </TdCheckCorrectItem>
@@ -2201,7 +2389,9 @@ export const CheckListDetails = () => {
                   {data?.startTimeAutoMm && data?.startTimeAutoMm.length < 2
                     ? '0' + data?.startTimeAutoMm
                     : data?.startTimeAutoMm}{' '}
-                  {moment(new Date(+data?.identifier)).zone("+06:00").format('DD.MM.YYYY')}
+                  {moment(new Date(+data?.identifier))
+                    .zone('+06:00')
+                    .format('DD.MM.YYYY')}
                 </Td>
               </Tr>
 
@@ -2215,7 +2405,9 @@ export const CheckListDetails = () => {
                   {data?.endTimeAutoMm && data?.endTimeAutoMm.length < 2
                     ? '0' + data?.endTimeAutoMm
                     : data?.endTimeAutoMm}{' '}
-                  {moment(new Date(+data?.identifier)).zone("+06:00").format('DD.MM.YYYY')}
+                  {moment(new Date(+data?.identifier))
+                    .zone('+06:00')
+                    .format('DD.MM.YYYY')}
                 </Td>
               </Tr>
 
@@ -2305,8 +2497,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={timeDateCt_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={timeDateCt_defect ? '1' : '0.5'} 
-                      $fill={timeDateCt_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={timeDateCt_defect ? '1' : '0.5'}
+                        $fill={timeDateCt_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </DivForLabelDateTime>
@@ -2348,8 +2542,10 @@ export const CheckListDetails = () => {
                     <StylesCheckBoxItem
                       $props={tltTimeDate_defect ? '4px' : '1px'}
                     >
-                      <CheckIcon $props={tltTimeDate_defect ? '1' : '0.5'} 
-                      $fill={tltTimeDate_defect ? '#ED2939' : 'grey'}/>
+                      <CheckIcon
+                        $props={tltTimeDate_defect ? '1' : '0.5'}
+                        $fill={tltTimeDate_defect ? '#ED2939' : 'grey'}
+                      />
                     </StylesCheckBoxItem>
                   </label>
                 </DivForLabelDateTime>
@@ -2403,7 +2599,56 @@ export const CheckListDetails = () => {
                         $props={
                           inputDataHospitalizationTimeDate_defect ? '1' : '0.5'
                         }
-                        $fill={inputDataHospitalizationTimeDate_defect ? '#ED2939' : 'grey'}
+                        $fill={
+                          inputDataHospitalizationTimeDate_defect
+                            ? '#ED2939'
+                            : 'grey'
+                        }
+                      />
+                    </StylesCheckBoxItem>
+                  </label>
+                </DivForLabelDateTime>
+              </AdditionalInfoDataLableBox>
+            </AdditionalInfoDataBox>
+
+            <AdditionalInfoDataBox>
+              <AdditionalInfoFormText>
+                Дата и время ЦАГ и тромбэктомия
+              </AdditionalInfoFormText>
+              <AdditionalInfoDataLableBox>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale="de"
+                >
+                  <DemoContainer components={['DateTimePicker']}>
+                    <DateTimePicker
+                      className={classes.dateTimePicker}
+                      label="Введите время и дату"
+                      ampm={false}
+                      format="DD.MM.YYYY HH:mm"
+                      onChange={newValue => setСagTimeDate(newValue)}
+                      value={dayjs(new Date(cagTimeDate)).locale('de')}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+                <DivForLabelDateTime>
+                  <label style={{ position: 'absolute' }}>
+                    <CheckBoxItem
+                      type="checkbox"
+                      id="cagTimeDate_defect"
+                      name="cagTimeDate_defect"
+                      value={cagTimeDate_defect}
+                      onChange={() =>
+                        setСagTimeDate_defect(!cagTimeDate_defect)
+                      }
+                      checked={cagTimeDate_defect}
+                    ></CheckBoxItem>
+                    <StylesCheckBoxItem
+                      $props={cagTimeDate_defect ? '4px' : '1px'}
+                    >
+                      <CheckIcon
+                        $props={cagTimeDate_defect ? '1' : '0.5'}
+                        $fill={cagTimeDate_defect ? '#ED2939' : 'grey'}
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -2421,7 +2666,6 @@ export const CheckListDetails = () => {
                   type="checkbox"
                   value="hospitalizationStrokeCenter"
                   checked={selectedOption === 'hospitalizationStrokeCenter'}
-                  // onChange={e => setSelectedOption(e.target.value)}
                   onChange={e => {
                     setSelectedOption(prevOption => {
                       return prevOption === 'hospitalizationStrokeCenter'
@@ -2440,7 +2684,6 @@ export const CheckListDetails = () => {
                   type="checkbox"
                   value="outpatientTreatment"
                   checked={selectedOption === 'outpatientTreatment'}
-                  // onChange={e => setSelectedOption(e.target.value)}
                   onChange={e => {
                     setSelectedOption(prevOption => {
                       return prevOption === 'outpatientTreatment'

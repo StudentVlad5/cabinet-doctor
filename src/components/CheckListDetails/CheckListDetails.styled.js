@@ -1,9 +1,9 @@
-import { theme } from 'components/baseStyles/Variables.styled';
-import styled from 'styled-components';
-import { ReactComponent as copyIcon } from 'images/svg/copy.svg';
-import { ReactComponent as wordIcon } from 'images/svg/word.svg';
-import { ReactComponent as checkIcon } from 'images/svg/vertical_line.svg';
-import { Link } from 'react-router-dom';
+import { theme } from "components/baseStyles/Variables.styled";
+import styled from "styled-components";
+import { ReactComponent as copyIcon } from "images/svg/copy.svg";
+import { ReactComponent as wordIcon } from "images/svg/word.svg";
+import { ReactComponent as checkIcon } from "images/svg/vertical_line.svg";
+import { Link } from "react-router-dom";
 
 export const CheckListBox = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const CheckListBox = styled.div`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     border-bottom: 3px solid ${theme.colors.black};
     bottom: 50px;
@@ -206,7 +206,7 @@ export const Td = styled.td`
 `;
 
 export const TdRed = styled(Td)`
-  background-color: ${props => props.$props};
+  background-color: ${(props) => props.$props};
 `;
 
 export const TdSmall = styled.td`
@@ -222,7 +222,7 @@ export const TdSmall = styled.td`
   }
 `;
 export const TdSmallRed = styled(TdSmall)`
-  background-color: ${props => props.$props};
+  background-color: ${(props) => props.$props};
 `;
 
 export const TdCheckCorrectItem = styled.td`
@@ -297,7 +297,7 @@ export const AdditionalInfoDataLableBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  gap: 8px;
   @media screen and (min-width: 1022px) {
     position: absolute;
     right: 0;
@@ -405,7 +405,7 @@ export const StylesCheckBoxItem = styled.div`
   align-items: center;
   width: 52px;
   height: 52px;
-  border: ${props => props.$props} solid ${theme.colors.black};
+  border: ${(props) => props.$props} solid ${theme.colors.black};
   border-radius: 11px;
   background-color: ${theme.colors.white};
   cursor: pointer;
@@ -414,10 +414,10 @@ export const CheckIcon = styled(checkIcon)`
   /* fill: red; */
   width: 36px;
   height: 36px;
-  opacity: ${props => props.$props};
-  fill: ${props => props.$fill};
+  opacity: ${(props) => props.$props};
+  fill: ${(props) => props.$fill};
   user-select: none;
-  stroke: ${props => props.$fill};
+  stroke: ${(props) => props.$fill};
 `;
 
 export const DecisionBox = styled.div`
@@ -444,7 +444,7 @@ export const DecisionBoxInput = styled.input`
   cursor: pointer;
   border-color: #7a7a7a;
 
-  &[type='checkbox']:checked {
+  &[type="checkbox"]:checked {
     accent-color: #009b2b;
   }
 `;
