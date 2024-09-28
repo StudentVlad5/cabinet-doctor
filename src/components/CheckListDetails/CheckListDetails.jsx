@@ -166,7 +166,7 @@ export const CheckListDetails = () => {
   const [hemorrhages_defect, setHemorrhages_defect] = useState(false);
   const [SACStroke_defect, setSACStroke_defect] = useState(false);
   const [ischemicStroke_defect, setIschemicStroke_defect] = useState(false);
-  const [pnmk_defect, setPnmk_defect] = useState(false);
+  const [transient_cerebrovascular_accident_defect, settransient_cerebrovascular_accident_defect] = useState(false);
   const [unknown_accident_defect, setUnknown_accident_defect] = useState(false);
   const [beginStrokeTreatment_defect, setBeginStrokeTreatment_defect] =
     useState(false);
@@ -347,8 +347,8 @@ export const CheckListDetails = () => {
             JSON.parse(data.normal?.ischemicStroke_defect)
           );
         }
-        if (data.normal?.pnmk_defect) {
-          setPnmk_defect(JSON.parse(data.normal?.pnmk_defect));
+        if (data.normal?.transient_cerebrovascular_accident_defect) {
+          settransient_cerebrovascular_accident_defect(JSON.parse(data.normal?.transient_cerebrovascular_accident_defect));
         }
         if (data.normal?.unknown_accident_defect) {
           setUnknown_accident_defect(
@@ -472,7 +472,7 @@ export const CheckListDetails = () => {
         &inputDataHospitalizationTimeDate=${inputDataHospitalizationTimeDate}&patientFullName_defect=${patientFullName_defect}&patientINN_defect=${patientINN_defect}&patientSex_defect=${patientSex_defect}
         &visualDescription_defect=${visualDescription_defect}&saggingFace_defect=${saggingFace_defect}&handDisplacement_defect=${handDisplacement_defect}&speechDisorders_defect=${speechDisorders_defect}&firstSymptomsTime_defect=${firstSymptomsTime_defect}&bloodSugarLevel_defect=${bloodSugarLevel_defect}&bodyTemperature_defect=${bodyTemperature_defect}&arterialPressure_defect=${arterialPressure_defect}&patientBodyWeight_defect=${patientBodyWeight_defect}&patientAge_defect=${patientAge_defect}&intracranialHemorrhages_defect=${intracranialHemorrhages_defect}&majorSurgeriesOrSevereInjuries_defect=${majorSurgeriesOrSevereInjuries_defect}&surgicalInterventions_defect=${surgicalInterventions_defect}&myocardialInfarction_defect=${myocardialInfarction_defect}&stroke_defect=${stroke_defect}
         &arterialPuncture_defect=${arterialPuncture_defect}&smallOperations_defect=${smallOperations_defect}&cardiovascularDiseases_defect=${cardiovascularDiseases_defect}&acuteInfectiousDisease_defect=${acuteInfectiousDisease_defect}&hemorrhagicStroke_defect=${hemorrhagicStroke_defect}&convulsions_defect=${convulsions_defect}&onmk_defect=${onmk_defect}
-        &hemorrhages_defect=${hemorrhages_defect}&SACStroke_defect=${SACStroke_defect}&ischemicStroke_defect=${ischemicStroke_defect}&pnmk_defect=${pnmk_defect}&unknown_accident_defect=${unknown_accident_defect}&beginStrokeTreatment_defect=${beginStrokeTreatment_defect}&intravenousAccess_defect=${intravenousAccess_defect}&patientTakingAnticoagulants_defect=${patientTakingAnticoagulants_defect}&ecgTaken_defect=${ecgTaken_defect}&lossOfBalance_defect=${lossOfBalance_defect}&visionProblems_defect=${visionProblems_defect}&selectedOption=${selectedOption}&hospitalizationDepartment=${hospitalizationDepartment}
+        &hemorrhages_defect=${hemorrhages_defect}&SACStroke_defect=${SACStroke_defect}&ischemicStroke_defect=${ischemicStroke_defect}&transient_cerebrovascular_accident_defect=${transient_cerebrovascular_accident_defect}&unknown_accident_defect=${unknown_accident_defect}&beginStrokeTreatment_defect=${beginStrokeTreatment_defect}&intravenousAccess_defect=${intravenousAccess_defect}&patientTakingAnticoagulants_defect=${patientTakingAnticoagulants_defect}&ecgTaken_defect=${ecgTaken_defect}&lossOfBalance_defect=${lossOfBalance_defect}&visionProblems_defect=${visionProblems_defect}&selectedOption=${selectedOption}&hospitalizationDepartment=${hospitalizationDepartment}
         &noteChecklistStrokeCenter_defect=${noteChecklistStrokeCenter_defect}&timeDateCt=${timeDateCt}&tltTimeDate=${tltTimeDate}&cagTimeDate=${cagTimeDate}&patientArrivalTime=${patientArrivalTime}&patientArrivalDate=${patientArrivalDate}&timeDateCt_defect=${timeDateCt_defect}&tltTimeDate_defect=${tltTimeDate_defect}&cagTimeDate_defect=${cagTimeDate_defect}&inputDataHospitalizationTimeDate_defect=${inputDataHospitalizationTimeDate_defect}`
       );
       if (!res) {
@@ -564,9 +564,7 @@ export const CheckListDetails = () => {
         data?.patientTakingAnticoagulants.toString() === 'true'
           ? 'Да'
           : 'Нет'
-      } ${
-      patientTakingAnticoagulants_defect === true ? '/ Данные неверны' : ''
-    }
+      } ${patientTakingAnticoagulants_defect === true ? '/ Данные неверны' : ''}
       У пациента снято ЭКГ: ${data?.ecgTakenHH ? data?.ecgTakenHH : ''} : ${
       data?.ecgTakenMM ? data?.ecgTakenMM : ''
     }  ${ecgTaken_defect === true ? '/ Данные неверны' : ''}
@@ -656,7 +654,7 @@ export const CheckListDetails = () => {
         (data?.hemorrhages && data?.hemorrhages.toString() === 'true') ||
         (data?.SACStroke && data?.SACStroke.toString() === 'true') ||
         (data?.ischemicStroke && data?.ischemicStroke.toString() === 'true') ||
-        (data?.pnmk && data?.pnmk.toString() === 'true')
+        (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true')
           ? 'Да'
           : ''
       } ${onmk_defect === true ? '/ Данные неверны' : ''}
@@ -674,9 +672,9 @@ export const CheckListDetails = () => {
            : '-'
        } ${ischemicStroke_defect === true ? '/ Данные неверны' : ''}
        Преходящее нарушение мозгового кровообращения (ПНМК): ${
-         data?.pnmk && data?.pnmk.toString() === 'true' ? 'Да' : '-'
-       } ${pnmk_defect === true ? '/ Данные неверны' : ''}
-       Не известно: ${
+         data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true' ? 'Да' : '-'
+       } ${transient_cerebrovascular_accident_defect === true ? '/ Данные неверны' : ''}
+       Другое: ${
          data?.unknown_accident && data?.unknown_accident.toString() === 'true'
            ? 'Да'
            : '-'
@@ -731,9 +729,7 @@ export const CheckListDetails = () => {
               .format('HH:mm DD.MM.YYYY')
           : ''
       } ${
-      inputDataHospitalizationTimeDate_defect === true
-        ? '/ Данные неверны'
-        : ''
+      inputDataHospitalizationTimeDate_defect === true ? '/ Данные неверны' : ''
     }
       Дата и время ЦАГ и тромбэктомия: ${
         data?.cagTimeDate
@@ -2083,7 +2079,7 @@ export const CheckListDetails = () => {
                       data?.SACStroke.toString() === 'true') ||
                     (data?.ischemicStroke &&
                       data?.ischemicStroke.toString() === 'true') ||
-                    (data?.pnmk && data?.pnmk.toString() === 'true') ||
+                    (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true') ||
                     (data?.unknown_accident &&
                       data?.unknown_accident.toString() === 'true')
                       ? theme.colors.accentCoral
@@ -2100,7 +2096,7 @@ export const CheckListDetails = () => {
                       data?.SACStroke.toString() === 'true') ||
                     (data?.ischemicStroke &&
                       data?.ischemicStroke.toString() === 'true') ||
-                    (data?.pnmk && data?.pnmk.toString() === 'true') ||
+                    (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true') ||
                     (data?.unknown_accident &&
                       data?.unknown_accident.toString() === 'true')
                       ? theme.colors.accentCoral
@@ -2112,7 +2108,7 @@ export const CheckListDetails = () => {
                   (data?.SACStroke && data?.SACStroke.toString() === 'true') ||
                   (data?.ischemicStroke &&
                     data?.ischemicStroke.toString() === 'true') ||
-                  (data?.pnmk && data?.pnmk.toString() === 'true') ||
+                  (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true') ||
                   (data?.unknown_accident &&
                     data?.unknown_accident.toString() === 'true')
                     ? 'Да'
@@ -2277,7 +2273,7 @@ export const CheckListDetails = () => {
               <Tr>
                 <TdSmallRed
                   $props={
-                    data?.pnmk && data?.pnmk.toString() === 'true'
+                    data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -2287,27 +2283,27 @@ export const CheckListDetails = () => {
                 </TdSmallRed>
                 <TdSmallRed
                   $props={
-                    data?.pnmk && data?.pnmk.toString() === 'true'
+                    data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
                 >
-                  {data?.pnmk && data?.pnmk.toString() === 'true' ? 'Да' : '-'}
+                  {data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true' ? 'Да' : '-'}
                 </TdSmallRed>
                 <TdCheckCorrectItem>
                   <label>
                     <CheckBoxItem
                       type="checkbox"
-                      id="pnmk_defect"
-                      name="pnmk_defect"
-                      value={pnmk_defect}
-                      onChange={() => setPnmk_defect(!pnmk_defect)}
-                      checked={pnmk_defect}
+                      id="transient_cerebrovascular_accident_defect"
+                      name="transient_cerebrovascular_accident_defect"
+                      value={transient_cerebrovascular_accident_defect}
+                      onChange={() => settransient_cerebrovascular_accident_defect(!transient_cerebrovascular_accident_defect)}
+                      checked={transient_cerebrovascular_accident_defect}
                     ></CheckBoxItem>
-                    <StylesCheckBoxItem $props={pnmk_defect ? '4px' : '1px'}>
+                    <StylesCheckBoxItem $props={transient_cerebrovascular_accident_defect ? '4px' : '1px'}>
                       <CheckIcon
-                        $props={pnmk_defect ? '1' : '0.5'}
-                        $fill={pnmk_defect ? '#ED2939' : 'grey'}
+                        $props={transient_cerebrovascular_accident_defect ? '1' : '0.5'}
+                        $fill={transient_cerebrovascular_accident_defect ? '#ED2939' : 'grey'}
                       />
                     </StylesCheckBoxItem>
                   </label>
@@ -2323,7 +2319,7 @@ export const CheckListDetails = () => {
                   }
                   style={{ paddingLeft: 60 }}
                 >
-                  Не известно
+                  Другое
                 </TdSmallRed>
                 <TdSmallRed
                   $props={
