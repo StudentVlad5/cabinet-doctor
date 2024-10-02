@@ -166,7 +166,10 @@ export const CheckListDetails = () => {
   const [hemorrhages_defect, setHemorrhages_defect] = useState(false);
   const [SACStroke_defect, setSACStroke_defect] = useState(false);
   const [ischemicStroke_defect, setIschemicStroke_defect] = useState(false);
-  const [transient_cerebrovascular_accident_defect, settransient_cerebrovascular_accident_defect] = useState(false);
+  const [
+    transient_cerebrovascular_accident_defect,
+    settransient_cerebrovascular_accident_defect,
+  ] = useState(false);
   const [unknown_accident_defect, setUnknown_accident_defect] = useState(false);
   const [beginStrokeTreatment_defect, setBeginStrokeTreatment_defect] =
     useState(false);
@@ -348,7 +351,9 @@ export const CheckListDetails = () => {
           );
         }
         if (data.normal?.transient_cerebrovascular_accident_defect) {
-          settransient_cerebrovascular_accident_defect(JSON.parse(data.normal?.transient_cerebrovascular_accident_defect));
+          settransient_cerebrovascular_accident_defect(
+            JSON.parse(data.normal?.transient_cerebrovascular_accident_defect)
+          );
         }
         if (data.normal?.unknown_accident_defect) {
           setUnknown_accident_defect(
@@ -651,12 +656,7 @@ export const CheckListDetails = () => {
           : '-'
       } ${convulsions_defect === true ? '/ Данные неверны' : ''}
       ОНМК ранее: ${
-        (data?.hemorrhages && data?.hemorrhages.toString() === 'true') ||
-        (data?.SACStroke && data?.SACStroke.toString() === 'true') ||
-        (data?.ischemicStroke && data?.ischemicStroke.toString() === 'true') ||
-        (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true')
-          ? 'Да'
-          : ''
+        data?.onmk && data?.onmk.toString() === 'true' ? 'Да' : ''
       } ${onmk_defect === true ? '/ Данные неверны' : ''}
        Геморрагический : ${
          data?.hemorrhages && data?.hemorrhages.toString() === 'true'
@@ -672,8 +672,15 @@ export const CheckListDetails = () => {
            : '-'
        } ${ischemicStroke_defect === true ? '/ Данные неверны' : ''}
        Преходящее нарушение мозгового кровообращения (ПНМК): ${
-         data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true' ? 'Да' : '-'
-       } ${transient_cerebrovascular_accident_defect === true ? '/ Данные неверны' : ''}
+         data?.transient_cerebrovascular_accident &&
+         data?.transient_cerebrovascular_accident.toString() === 'true'
+           ? 'Да'
+           : '-'
+       } ${
+      transient_cerebrovascular_accident_defect === true
+        ? '/ Данные неверны'
+        : ''
+    }
        Другое: ${
          data?.unknown_accident && data?.unknown_accident.toString() === 'true'
            ? 'Да'
@@ -2073,15 +2080,7 @@ export const CheckListDetails = () => {
               <Tr>
                 <TdSmallRed
                   $props={
-                    (data?.hemorrhages &&
-                      data?.hemorrhages.toString() === 'true') ||
-                    (data?.SACStroke &&
-                      data?.SACStroke.toString() === 'true') ||
-                    (data?.ischemicStroke &&
-                      data?.ischemicStroke.toString() === 'true') ||
-                    (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true') ||
-                    (data?.unknown_accident &&
-                      data?.unknown_accident.toString() === 'true')
+                    data?.onmk && data?.onmk.toString() === 'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -2090,29 +2089,12 @@ export const CheckListDetails = () => {
                 </TdSmallRed>
                 <TdSmallRed
                   $props={
-                    (data?.hemorrhages &&
-                      data?.hemorrhages.toString() === 'true') ||
-                    (data?.SACStroke &&
-                      data?.SACStroke.toString() === 'true') ||
-                    (data?.ischemicStroke &&
-                      data?.ischemicStroke.toString() === 'true') ||
-                    (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true') ||
-                    (data?.unknown_accident &&
-                      data?.unknown_accident.toString() === 'true')
+                    data?.onmk && data?.onmk.toString() === 'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
                 >
-                  {(data?.hemorrhages &&
-                    data?.hemorrhages.toString() === 'true') ||
-                  (data?.SACStroke && data?.SACStroke.toString() === 'true') ||
-                  (data?.ischemicStroke &&
-                    data?.ischemicStroke.toString() === 'true') ||
-                  (data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true') ||
-                  (data?.unknown_accident &&
-                    data?.unknown_accident.toString() === 'true')
-                    ? 'Да'
-                    : ''}
+                  {data?.onmk && data?.onmk.toString() === 'true' ? 'Да' : ''}
                 </TdSmallRed>
                 <TdCheckCorrectItem>
                   <label>
@@ -2273,7 +2255,9 @@ export const CheckListDetails = () => {
               <Tr>
                 <TdSmallRed
                   $props={
-                    data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true'
+                    data?.transient_cerebrovascular_accident &&
+                    data?.transient_cerebrovascular_accident.toString() ===
+                      'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -2283,12 +2267,17 @@ export const CheckListDetails = () => {
                 </TdSmallRed>
                 <TdSmallRed
                   $props={
-                    data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true'
+                    data?.transient_cerebrovascular_accident &&
+                    data?.transient_cerebrovascular_accident.toString() ===
+                      'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
                 >
-                  {data?.transient_cerebrovascular_accident && data?.transient_cerebrovascular_accident.toString() === 'true' ? 'Да' : '-'}
+                  {data?.transient_cerebrovascular_accident &&
+                  data?.transient_cerebrovascular_accident.toString() === 'true'
+                    ? 'Да'
+                    : '-'}
                 </TdSmallRed>
                 <TdCheckCorrectItem>
                   <label>
@@ -2297,13 +2286,31 @@ export const CheckListDetails = () => {
                       id="transient_cerebrovascular_accident_defect"
                       name="transient_cerebrovascular_accident_defect"
                       value={transient_cerebrovascular_accident_defect}
-                      onChange={() => settransient_cerebrovascular_accident_defect(!transient_cerebrovascular_accident_defect)}
+                      onChange={() =>
+                        settransient_cerebrovascular_accident_defect(
+                          !transient_cerebrovascular_accident_defect
+                        )
+                      }
                       checked={transient_cerebrovascular_accident_defect}
                     ></CheckBoxItem>
-                    <StylesCheckBoxItem $props={transient_cerebrovascular_accident_defect ? '4px' : '1px'}>
+                    <StylesCheckBoxItem
+                      $props={
+                        transient_cerebrovascular_accident_defect
+                          ? '4px'
+                          : '1px'
+                      }
+                    >
                       <CheckIcon
-                        $props={transient_cerebrovascular_accident_defect ? '1' : '0.5'}
-                        $fill={transient_cerebrovascular_accident_defect ? '#ED2939' : 'grey'}
+                        $props={
+                          transient_cerebrovascular_accident_defect
+                            ? '1'
+                            : '0.5'
+                        }
+                        $fill={
+                          transient_cerebrovascular_accident_defect
+                            ? '#ED2939'
+                            : 'grey'
+                        }
                       />
                     </StylesCheckBoxItem>
                   </label>
